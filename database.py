@@ -5,13 +5,18 @@ from datetime import datetime
 from typing import Dict, List, Any, Optional
 from config import settings
 import aiofiles
+from pathlib import Path
 import asyncio
 
 class JSONDatabase:
-    def __init__(self):
-        self.users_file = settings.USERS_FILE
-        self.servers_file = settings.SERVERS_FILE
-        self.logs_file = settings.LOGS_FILE
+    def __init__(self, data_dir="data"):
+        self.data_dir = data_dir
+        # This line is CRITICAL for Render
+        Path(self.data_dir).mkdir(parents=True, exist_ok=True)
+
+        self.users_file = os.path.join(data_dir, "users.json")
+        self.servers_file = os.path.join(data_dir, "servers.json")
+        self.logs_file = os.path.join(data_dir, "logs.json")
         self._init_files()
     
     def _init_files(self):
