@@ -6,6 +6,7 @@ passlib[bcrypt]
 bcrypt
 cryptography
 pydantic
+pydantic[email]
 python-multipart
 aiosmtplib
 python-dotenv
