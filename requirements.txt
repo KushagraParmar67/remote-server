@@ -2,8 +2,6 @@ fastapi
 uvicorn[standard]
 paramiko
 python-jose[cryptography]
-passlib[bcrypt]
-bcrypt
 cryptography
 pydantic
 pydantic[email]

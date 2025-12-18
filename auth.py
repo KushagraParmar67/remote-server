@@ -1,28 +1,26 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
-from passlib.context import CryptContext
+import hashlib  # ADD THIS
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from models import Token, UserCreate
 from database import db
 from config import settings
 
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# REMOVE: pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a password against its hash"""
-    return pwd_context.verify(plain_password, hashed_password)
+    # Simple SHA256 hash (for demo only)
+    test_hash = hashlib.sha256(plain_password.encode()).hexdigest()
+    return test_hash == hashed_password
 
 def get_password_hash(password: str) -> str:
-    """Hash a password (bcrypt max 72 bytes)"""
-    # Truncate to 72 bytes for bcrypt
-    if len(password.encode('utf-8')) > 72:
-        encoded = password.encode('utf-8')[:72]
-        password = encoded.decode('utf-8', errors='ignore')
-    return pwd_context.hash(password)
+    """Hash a password"""
+    # Simple SHA256 hash (for demo only)
+    return hashlib.sha256(password.encode()).hexdigest()
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """Create a JWT access token"""
